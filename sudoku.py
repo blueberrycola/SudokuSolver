@@ -33,7 +33,7 @@ def printgame():
         for c in r:
             if(counter < 9):
                 if(counter % 3 == 0 and counter != 0):
-                    print(f'  ', end='')                
+                    print(f' . ', end='')                
             if(counter == 9):
                 counter = 0
             print(f'| {game[i][j]} |', end='')
@@ -41,6 +41,8 @@ def printgame():
             counter += 1
         i += 1
         print()
+        if(i == 3 or i == 6):
+            print("- - - - - - - - - - - - - - - - - - - - - - - - -")
 
 
 
