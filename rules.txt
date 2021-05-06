@@ -1,0 +1,19 @@
+Sudoku is a puzzle based on a small number of very simple rules:
+
+Every square has to contain a single number
+Only the numbers from 1 through to 9 can be used
+Each 3×3 box can only contain each number from 1 to 9 once
+Each vertical column can only contain each number from 1 to 9 once
+Each horizontal row can only contain each number from 1 to 9 once
+Once the puzzle is solved, this means that every row, column, and 3×3 box will contain every number from 1 to 9 exactly once. 
+
+In other words, no number can be repeated in any 3×3 box, row, or column. 
+
+
+TODO:
+Create function to load Sudoku puzzles into game variable
+Create function to print Sudoku puzzles
+UI?
+Create function for error checking of individual cell
+Create function for error checking of horizontal rows
+Create function for error checking of vertical rows
