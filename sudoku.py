@@ -18,27 +18,36 @@ def loadgame():
     filename = input("Please enter the filename that is inside the directory: ")
     print(filename)
     f = open(filename, "r")
-    #Reads a line in file name 9 times
-    #Iterator vars to keep track of game index
+    
+    newgame = f.read().splitlines()
     i = 0
-    #Checks the line for the text document exactly 9 times.
-    #All that is needed to load sudoku into python application
-    for x in range(9):
-        #take line from txt and turn it into a list
-        row = f.readline()
-        row = row.split(' ')
-        #j must reset after a row has been completed
-        j = 0
-        #For each item in row put it according the game index using i, j vars
-        for item in row:
-            game[i][j] = row[j]
-            print(game[i][j]),
-            j += 1         
-        #Used to know where game is in the loop
+    for x in newgame:
+        array = x.split(' ')
+        game[i] = array
         i += 1
+def printgame():
+    i = 0
+    counter = 0
+    for r in game:
+        j = 0
+        for c in r:
+            if(counter < 9):
+                if(counter % 3 == 0 and counter != 0):
+                    print(f'  ', end='')                
+            if(counter == 9):
+                counter = 0
+            print(f'| {game[i][j]} |', end='')
+            j += 1
+            counter += 1
+        i += 1
+        print()
+
 
 
         
 def main():
     loadgame()
+    printgame()
+    
+    
 main()
