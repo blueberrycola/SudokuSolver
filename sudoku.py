@@ -62,11 +62,12 @@ def countarray():
     count.append(countcube(8))
     return count
 
+upper = [0, 1, 2]
+mid = [3, 4, 5]
+lower = [6, 7, 8]
 #Returns int that contain the count for how many nums are already filled. Used to find the one with the most numbers
 def countcube(cubeindex):
-    upper = [0, 1, 2]
-    mid = [3, 4, 5]
-    lower = [6, 7, 8]
+
     count = 0
     
     if(cubeindex == 0):
@@ -123,6 +124,7 @@ def findseq(arr):
         cube_seq = []
         done = False
         while(not done):
+            #stop condition
             if (def_seq == [-1, -1, -1, -1, -1, -1, -1, -1, -1]):
                 #print("array empty yo")
                 break
@@ -131,11 +133,74 @@ def findseq(arr):
             index, value = max(enumerate(arr), key=operator.itemgetter(1))
             #print(f'index: {index} value: {value}')
             cube_seq.append(index)
+            #Mark def_seq index as already used. (since any cube will never have -1 numbers inside)
             def_seq[index] = -1
             arr[index] = 0
         return cube_seq
-            
-            
+#Returns array of pairs for a given cube
+def getindexes(cubeindex):
+    index_pairs = []
+    
+    if(cubeindex == 0):
+        print("fooo")
+        for num in upper:
+            for num2 in upper:
+                pair = []
+                if(game[num][num2] != '0'):
+                    pair.append(num)
+                    pair.append(num2)
+                    print("foo")
+                    index_pairs.append(pair)
+        return index_pairs
+    if(cubeindex == 1):
+        for num in upper:
+            for num2 in mid:
+                if(game[num][num2] != '0'):
+                    count += 1
+    if(cubeindex == 2):
+        for num in upper:
+            for num2 in lower:
+                if(game[num][num2] != '0'):
+                    count += 1
+    if(cubeindex == 3):
+        for i in mid:
+            for j in upper:
+                if(game[i][j] != '0'):
+                    count += 1
+    if(cubeindex == 4):
+        for i in mid:
+            for j in mid:
+                if(game[i][j] != '0'):
+                    count += 1
+    if(cubeindex == 5):
+        for i in mid:
+            for j in lower:
+                if(game[i][j] != '0'):
+                    count += 1
+    if(cubeindex == 6):
+        for i in lower:
+            for j in upper:
+                if(game[i][j] != '0'):
+                    count += 1
+    if(cubeindex == 7):
+        for i in lower:
+            for j in mid:
+                if(game[i][j] != '0'):
+                    count += 1
+    if(cubeindex == 8):
+        for i in lower:
+            for j in lower:
+                if(game[i][j] != '0'):
+                    count += 1
+    
+
+#Solves a given cube via its index inside the actual params
+def solvecube(index):
+    full_nums = []
+    #Since the game is made by a 2d list we need a func to return a cubes index that acts like cubecount
+    #FIXME: merge a function to coincide with solvecube() and countcube()
+    cube_seq = getindexes(index)
+    print(cube_seq)       
 
 
 def main():
@@ -144,9 +209,11 @@ def main():
     cube_array = countarray()
     print(f'Cube Index [0-8]: {cube_array}')
     #We start with the cubes with the most nums since they are the easiest to solve
+    #In order to do this we must find the solving sequence for each cube. Sorting by cubes with most numbers
     solve_sequence = findseq(cube_array)
     print(f'Solving sequence: {solve_sequence}')
-
+    #Now that we have a solving sequence we run solvecube() for each index in solve_sequence
+    solvecube(0)
     
     
     
