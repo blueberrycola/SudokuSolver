@@ -1,7 +1,7 @@
 ###       Sudoku Solver       ###
 ### Written by Chase Johnston ###
 ###     Version 0.1           ###
-
+import operator
 #TODO:
     #Create a function to print the game object X
     #Create a function to load various sudoku puzzles from text X
@@ -19,6 +19,8 @@ game = [[0]*cell]*cell # The game is made of 9x9 rows and cols [0,80]
 #Simply enter blank tiles as 0 and others 1-9. delimited by space and newline
 def loadgame():
     filename = input("Please enter the filename that is inside the directory: ")
+    if(filename == 'debug'):
+        filename = "test0_data.txt"
     print(filename)
     f = open(filename, "r")
     
@@ -46,7 +48,21 @@ def printgame():
         print()
         if(i == 3 or i == 6):
             print("= - - - - - - - + - - - - - - - - + - - - - - - - =")
-#Returns array that contain the count for how many nums are already filled. Used to find the one with the most numbers
+#Returns array of each cube inside given sudoku puzzle
+def countarray():
+    count = []
+    count.append(countcube(0))
+    count.append(countcube(1))
+    count.append(countcube(2))
+    count.append(countcube(3))
+    count.append(countcube(4))
+    count.append(countcube(5))
+    count.append(countcube(6))
+    count.append(countcube(7))
+    count.append(countcube(8))
+    return count
+
+#Returns int that contain the count for how many nums are already filled. Used to find the one with the most numbers
 def countcube(cubeindex):
     upper = [0, 1, 2]
     mid = [3, 4, 5]
@@ -100,20 +116,37 @@ def countcube(cubeindex):
                     count += 1
     
     return count                
-    
-        
+#function that finds the max value for the given array. Returns index that goes in order of how to solve
+def findseq(arr):
+        #default sequence is all nums listed, used as stop condition for while loop
+        def_seq = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        cube_seq = []
+        done = False
+        while(not done):
+            if (def_seq == [-1, -1, -1, -1, -1, -1, -1, -1, -1]):
+                #print("array empty yo")
+                break
+                done = True
+            #find max inside arr
+            index, value = max(enumerate(arr), key=operator.itemgetter(1))
+            #print(f'index: {index} value: {value}')
+            cube_seq.append(index)
+            def_seq[index] = -1
+            arr[index] = 0
+        return cube_seq
+            
+            
+
+
 def main():
     loadgame()
     printgame()
-    print(countcube(0))
-    print(countcube(1))
-    print(countcube(2))
-    print(countcube(3))
-    print(countcube(4))
-    print(countcube(5))
-    print(countcube(6))
-    print(countcube(7))
-    print(countcube(8))
+    cube_array = countarray()
+    print(f'Cube Index [0-8]: {cube_array}')
+    #We start with the cubes with the most nums since they are the easiest to solve
+    solve_sequence = findseq(cube_array)
+    print(f'Solving sequence: {solve_sequence}')
+
     
     
     
