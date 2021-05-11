@@ -137,69 +137,101 @@ def findseq(arr):
             def_seq[index] = -1
             arr[index] = 0
         return cube_seq
+#Returns boolean value if a horizontal row (i) has all nums [1-9]
+def checkhorizontal(i):
+    numlist = []
+    correctlist = [1,2,3,4,5,6,7,8,9]
+    for tile in game[i]:
+        if(tile == '0'):
+            return False
+        else:
+            numlist.append(tile)
+    if(numlist == correctlist):
+        return True
+    #if num list not equal return false
+    return False
+#Returns boolean value if a vertical column (j) has all nums [1-9]
+def checkvertical(j):
+    numlist = []
+    correctlist = [1,2,3,4,5,6,7,8,9]
+    i = 0
+    done = False
+    while(not done):
+        if(game[i][j] == '0'):
+            return False
+        else:
+            numlist.append(game[i][j])
+        i += 1
+        if(i == 9):
+            done = True
+            break
+    if(numlist == correctlist):
+        return True
+    else:
+        return False
+
+#Used for get indexes
+def checkpair(i, j):
+    pair = []
+    pair.append(i)
+    pair.append(j)
+    return pair
 #Returns array of pairs for a given cube
-def getindexes(cubeindex):
+def cubeindexes(cubeindex):
     index_pairs = []
-    
     if(cubeindex == 0):
-        print("fooo")
         for num in upper:
             for num2 in upper:
-                pair = []
-                if(game[num][num2] != '0'):
-                    pair.append(num)
-                    pair.append(num2)
-                    print("foo")
-                    index_pairs.append(pair)
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
+                    
         return index_pairs
     if(cubeindex == 1):
         for num in upper:
             for num2 in mid:
-                if(game[num][num2] != '0'):
-                    count += 1
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 2):
         for num in upper:
             for num2 in lower:
-                if(game[num][num2] != '0'):
-                    count += 1
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 3):
-        for i in mid:
-            for j in upper:
-                if(game[i][j] != '0'):
-                    count += 1
+        for num in mid:
+            for num2 in upper:
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 4):
-        for i in mid:
-            for j in mid:
-                if(game[i][j] != '0'):
-                    count += 1
+        for num in mid:
+            for num2 in mid:
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 5):
-        for i in mid:
-            for j in lower:
-                if(game[i][j] != '0'):
-                    count += 1
+        for num in mid:
+            for num2 in lower:
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 6):
-        for i in lower:
-            for j in upper:
-                if(game[i][j] != '0'):
-                    count += 1
+        for num in lower:
+            for num2 in upper:
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 7):
-        for i in lower:
-            for j in mid:
-                if(game[i][j] != '0'):
-                    count += 1
+        for num in lower:
+            for num2 in mid:
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     if(cubeindex == 8):
-        for i in lower:
-            for j in lower:
-                if(game[i][j] != '0'):
-                    count += 1
+        for num in lower:
+            for num2 in lower:
+                    if(game[num][num2] != '0'):
+                        index_pairs.append(checkpair(num, num2))
     
 
 #Solves a given cube via its index inside the actual params
 def solvecube(index):
     full_nums = []
-    #Since the game is made by a 2d list we need a func to return a cubes index that acts like cubecount
-    #FIXME: merge a function to coincide with solvecube() and countcube()
-    cube_seq = getindexes(index)
+    cube_seq = cubeindexes(index)
     print(cube_seq)       
 
 
