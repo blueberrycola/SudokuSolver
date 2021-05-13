@@ -128,7 +128,6 @@ def findseq(arr):
             if (def_seq == [-1, -1, -1, -1, -1, -1, -1, -1, -1]):
                 #print("array empty yo")
                 break
-                done = True
             #find max inside arr
             index, value = max(enumerate(arr), key=operator.itemgetter(1))
             #print(f'index: {index} value: {value}')
@@ -150,6 +149,15 @@ def checkhorizontal(i):
         return True
     #if num list not equal return false
     return False
+
+def scanhorizontal(i):
+    nums = []
+    for tile in game[i]:
+        if(tile != '0'):
+            nums.append(tile)
+    nums.sort()
+    return nums
+
 #Returns boolean value if a vertical column (j) has all nums [1-9]
 def checkvertical(j):
     numlist = []
@@ -163,12 +171,26 @@ def checkvertical(j):
             numlist.append(game[i][j])
         i += 1
         if(i == 9):
-            done = True
             break
     if(numlist == correctlist):
         return True
     else:
         return False
+#reports how many numbers are present vertically in a column
+def scanvertical(j):
+    nums = []
+    i = 0
+    done = False
+    while(not done):
+        if(game[i][j] != '0'):
+            nums.append(game[i][j])
+        i += 1
+        if(i == 9):
+            break
+    nums.sort()
+    return nums
+
+
 
 #Used for get indexes
 def checkpair(i, j):
@@ -176,13 +198,13 @@ def checkpair(i, j):
     pair.append(i)
     pair.append(j)
     return pair
-#Returns array of pairs for a given cube
+#Returns array of pairs for all empty tiles
 def cubeindexes(cubeindex):
     index_pairs = []
     if(cubeindex == 0):
         for num in upper:
             for num2 in upper:
-                    if(game[num][num2] != '0'):
+                    if(game[num][num2] == '0'):
                         index_pairs.append(checkpair(num, num2))
                     
         return index_pairs
@@ -226,13 +248,89 @@ def cubeindexes(cubeindex):
             for num2 in lower:
                     if(game[num][num2] != '0'):
                         index_pairs.append(checkpair(num, num2))
-    
+#Used in solvecube() to combine all nums {cube, vert, hori}    
+def numcube(hori, vert, cube):
+    #Merge hori + vert with no duplicates
+    h = set(hori)
+    v = set(vert)
+    hv = v - h
+    resulthv = hori + list(hv)
+    #Merge HV with cube with no duplicates
+    r = set(resulthv)
+    c = set(cube)
+    rc = c - r
+    resultrc = resulthv + list(rc)
+    resultrc.sort()
+
+    return resultrc
 
 #Solves a given cube via its index inside the actual params
 def solvecube(index):
     full_nums = []
+    #Find index of 
     cube_seq = cubeindexes(index)
-    print(cube_seq)       
+    print(f'Empty tiles for index({index}): {cube_seq}')
+    #Find cube_nums
+    cube_nums = []
+    #run thru cube
+    if(index == 0):
+        for i in upper:
+            for j in upper:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+    if(index == 1):
+        for i in upper:
+            for j in mid:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+        
+    if(index == 2):
+        for i in upper:
+            for j in lower:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+    if(index == 3):
+        for i in mid:
+            for j in upper:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+    if(index == 4):
+        for i in mid:
+            for j in mid:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+    if(index == 5):
+        for i in mid:
+            for j in lower:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+    if(index == 6):
+        for i in lower:
+            for j in upper:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])                        
+    if(index == 7):
+        for i in lower:
+            for j in mid:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j]) 
+    if(index == 8):
+        for i in lower:
+            for j in lower:
+                if(game[i][j] != '0'):
+                    cube_nums.append(game[i][j])
+    cube_nums.sort()
+    print(f'cubenums: {cube_nums}') 
+    #loop empty tiles 0 -> i, [1] -> j
+    for item in cube_seq:
+        hori_nums = scanhorizontal(item[0])
+        #print(f'hori: {hori_nums}')
+        vert_nums = scanvertical(item[1])
+        #print(f'vert: {vert_nums}')
+        
+        totalnums = numcube(hori_nums, vert_nums, cube_nums)
+        print(f'Total nums: [cube, hori, vert]: {totalnums}')
+
 
 
 def main():
